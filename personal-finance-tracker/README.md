@@ -20,7 +20,9 @@ A comprehensive web application to track your personal finances, including bank 
 ## Installation
 
 1. Clone this repository:
+
 ```bash
+
 git clone https://github.com/Deepansri94/Personal_tracker.git
 cd personal-finance-tracker
 ```
@@ -33,7 +35,7 @@ source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 
 3. Install the required dependencies:
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-local.txt
 ```
 
 ## Usage
