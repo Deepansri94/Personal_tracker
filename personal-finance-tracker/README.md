@@ -21,7 +21,7 @@ A comprehensive web application to track your personal finances, including bank 
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/personal-finance-tracker.git
+git clone https://github.com/Deepansri94/Personal_tracker.git
 cd personal-finance-tracker
 ```
 
