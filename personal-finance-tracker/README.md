@@ -11,11 +11,11 @@ A comprehensive web application to track your personal finances, including bank 
 - **Loan Accounts**: Manage loan details and monitor repayment progress
 - **Transactions**: Record and analyze income and expenses
 
-## Screenshots
+<!-- ## Screenshots
 
 ![Dashboard](screenshots/dashboard.png)
 ![Bank Accounts](screenshots/bank_accounts.png)
-![Loan Accounts](screenshots/loan_accounts.png)
+![Loan Accounts](screenshots/loan_accounts.png) -->
 
 ## Installation
 
@@ -27,13 +27,15 @@ git clone https://github.com/Deepansri94/Personal_tracker.git
 cd personal-finance-tracker
 ```
 
-2. Create a virtual environment (optional but recommended):
+2.Create a virtual environment (optional but recommended):
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 ```
 
-3. Install the required dependencies:
+3.Install the required dependencies:
+
 ```bash
 pip install -r requirements-local.txt
 ```
@@ -41,18 +43,21 @@ pip install -r requirements-local.txt
 ## Usage
 
 1. Run the Streamlit application:
+
 ```bash
 streamlit run app.py
 ```
 
-2. Open your web browser and navigate to:
-```
+2.Open your web browser and navigate to:
+
+```bash
 http://localhost:8501
 ```
 
 ## Data Storage
 
 All data is stored locally in JSON files within the `data` directory:
+
 - Bank accounts: `data/bank_accounts.json`
 - Credit cards: `data/credit_cards.json`
 - Demat holdings: `data/demat_holdings.json`
