@@ -1,1 +1,29 @@
-[{"bank_name": "ICICI Bank", "account_number": "1722", "account_type": "Savings", "balance": "14.540000000000001", "interest_rate": "0.0", "notes": "", "last_updated": "2025-04-28"}, {"bank_name": "Chit", "account_number": "0000", "account_type": "Other", "balance": "35730.0", "interest_rate": "0.0", "notes": "", "last_updated": "2025-04-25"}, {"bank_name": "CANARA BANK", "account_number": "1781", "account_type": "Savings", "balance": "821.8", "interest_rate": "0.0", "notes": "", "last_updated": "2025-04-28"}]
+[
+    {
+        "bank_name": "ICICI Bank",
+        "account_number": "1722",
+        "account_type": "Savings",
+        "balance": "73418.529",
+        "interest_rate": "0.0",
+        "notes": "",
+        "last_updated": "2025-04-30"
+    },
+    {
+        "bank_name": "Chit",
+        "account_number": "0000",
+        "account_type": "Other",
+        "balance": "35730.0",
+        "interest_rate": "0.0",
+        "notes": "",
+        "last_updated": "2025-04-25"
+    },
+    {
+        "bank_name": "CANARA BANK",
+        "account_number": "1781",
+        "account_type": "Savings",
+        "balance": "649.5999999999999",
+        "interest_rate": "0.0",
+        "notes": "",
+        "last_updated": "2025-04-30"
+    }
+]
