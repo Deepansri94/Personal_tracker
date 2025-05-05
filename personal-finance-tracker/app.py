@@ -696,23 +696,52 @@ with tab4:
             holding_submitted = st.form_submit_button("Add Stock Holding")
             
             if holding_submitted and stock_symbol and stock_name and quantity > 0:
-                new_holding = {
-                    "stock_symbol": stock_symbol.upper(),
-                    "stock_name": stock_name,
-                    "quantity": str(quantity),
-                    "purchase_price": str(purchase_price),
-                    "current_price": str(current_price),
-                    "purchase_date": purchase_date.strftime("%Y-%m-%d"),
-                    "purchase_value": str(purchase_value),
-                    "current_value": str(current_value),
-                    "profit_loss": str(profit_loss),
-                    "profit_loss_percent": str(profit_loss_percent),
-                    "last_updated": datetime.now().strftime("%Y-%m-%d")
-                }
+                stock_symbol = stock_symbol.upper()
+
+                existing = next((h for h in st.session_state.demat_holdings if h['stock_symbol'] == stock_symbol), None)
+
+                if existing:
+                    # Update the existing holding
+                    old_quantity = float(existing['quantity'])
+                    old_price = float(existing['purchase_price'])
+                    total_old_investment = old_quantity * old_price
+                    total_new_investment = quantity * purchase_price
+                    new_quantity = old_quantity + quantity
+
+                    # Weighted average price
+                    new_avg_price = (total_old_investment + total_new_investment) / new_quantity
+
+                    existing['quantity'] = str(new_quantity)
+                    existing['purchase_price'] = str(new_avg_price)
+                    existing['current_price'] = str(current_price)
+                    existing['purchase_date'] = purchase_date.strftime("%Y-%m-%d")
+                    existing['purchase_value'] = str(new_quantity * new_avg_price)
+                    existing['current_value'] = str(new_quantity * current_price)
+                    existing['profit_loss'] = str(float(existing['current_value']) - float(existing['purchase_value']))
+                    existing['profit_loss_percent'] = str((float(existing['profit_loss']) / float(existing['purchase_value'])) * 100 if float(existing['purchase_value']) > 0 else 0)
+                    existing['last_updated'] = datetime.now().strftime("%Y-%m-%d")
+
+                    st.success(f"Updated holding for {stock_symbol} with {quantity} additional shares.")
+
+                else:
+                    # Add new holding
+                    new_holding = {
+                        "stock_symbol": stock_symbol,
+                        "stock_name": stock_name,
+                        "quantity": str(quantity),
+                        "purchase_price": str(purchase_price),
+                        "current_price": str(current_price),
+                        "purchase_date": purchase_date.strftime("%Y-%m-%d"),
+                        "purchase_value": str(purchase_value),
+                        "current_value": str(current_value),
+                        "profit_loss": str(profit_loss),
+                        "profit_loss_percent": str(profit_loss_percent),
+                        "last_updated": datetime.now().strftime("%Y-%m-%d")
+                    }
+                    st.session_state.demat_holdings.append(new_holding)
+                    st.success(f"Added new holding: {quantity} shares of {stock_name} ({stock_symbol})")
                 
-                st.session_state.demat_holdings.append(new_holding)
                 save_data('demat_holdings')
-                st.success(f"Added {quantity} shares of {stock_name} ({stock_symbol})")
                 st.rerun()
     
     # Display demat holdings
@@ -747,6 +776,41 @@ with tab4:
                 delta=f"{total_profit_loss_percent:.2f}%"
             )
         
+        st.subheader("Your Stock Holdings")
+        st.markdown("### Update Current Prices")
+
+        # Input for updated prices
+        new_prices = {}
+
+        for holding in st.session_state.demat_holdings:
+            symbol = holding['stock_symbol']
+            new_price = st.number_input(
+                f"Enter current price for {symbol} ({holding['stock_name']}):",
+                value=float(holding['current_price']),
+                format="%.2f",
+                key=f"price_input_{symbol}"
+            )
+            new_prices[symbol] = new_price
+
+        # Update values when button clicked
+        if st.button("Update Holdings"):
+            for holding in st.session_state.demat_holdings:
+                symbol = holding['stock_symbol']
+                updated_price = new_prices[symbol]
+                quantity = float(holding['quantity'])
+                purchase_value = float(holding['purchase_value'])
+
+                holding['current_price'] = updated_price
+                holding['current_value'] = quantity * updated_price
+                holding['profit_loss'] = holding['current_value'] - purchase_value
+                holding['profit_loss_percent'] = (holding['profit_loss'] / purchase_value * 100) if purchase_value != 0 else 0
+                holding['last_updated'] = datetime.now().strftime("%Y-%m-%d")
+
+                    
+            save_data('demat_holdings')
+            st.success(f"Added {quantity} shares of {stock_name} ({stock_symbol})")
+            st.rerun() 
+            
         # Display table of holdings
         st.subheader("Your Stock Holdings")
         
@@ -766,7 +830,7 @@ with tab4:
         
         df_holdings = pd.DataFrame(holdings_data)
         st.dataframe(df_holdings, use_container_width=True)
-        
+            
         # Portfolio Allocation Chart
         st.subheader("Portfolio Allocation")
         
